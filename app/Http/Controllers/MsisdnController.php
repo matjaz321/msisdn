@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Records;
 use Illuminate\Http\Request;
 use libphonenumber\NumberParseException;
 use libphonenumber\PhoneNumberToCarrierMapper;
@@ -35,11 +36,16 @@ class MsisdnController extends Controller {
 
         // We will return this data to the view.
         $data = [
-          'MNO' => $carrier,
+          'mno' => $carrier,
           'country_dialing_code' => $countryDialingCode,
           'subscriber_number' => $subscriberNumber,
           'country_code' => $countryCode,
         ];
+
+        Records::create([
+          'phone_number' => $number,
+          'data' => json_encode($data),
+        ]);
       }
     } catch (NumberParseException $e) {
       // Define errors.
