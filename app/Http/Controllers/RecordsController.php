@@ -12,11 +12,10 @@ class RecordsController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index($record) {
-      $record = Records::find($record);
-      $data = (array) json_decode($record->data);
+    public function index() {
+      $records = Records::all();
 
-      return view('record')->with(['data' => $data, 'phone_number' => $record->phone_number]);
+      return view ('records')->with('records', $records);
     }
 
     /**
@@ -43,12 +42,15 @@ class RecordsController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param  int  $record
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show($record)
     {
-        //
+      $record = Records::find($record);
+      $data = (array) json_decode($record->data);
+
+      return view('record')->with(['data' => $data, 'phone_number' => $record->phone_number]);
     }
 
     /**

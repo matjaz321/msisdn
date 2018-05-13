@@ -22,6 +22,7 @@
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
 </head>
 <body class="bg-light">
+    @include('layouts.header')
     <div class="container">
         @yield('content')
         @include('layouts.footer')

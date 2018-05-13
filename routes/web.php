@@ -22,5 +22,10 @@ Route::post('/number-validate', [
 
 Route::get('/record/{record}', [
   'as' => 'record.item',
+  'uses' => 'RecordsController@show',
+]);
+
+Route::get('/records', [
+  'as' => 'records.list',
   'uses' => 'RecordsController@index',
 ]);
