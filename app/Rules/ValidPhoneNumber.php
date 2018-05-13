@@ -6,20 +6,9 @@ use Illuminate\Contracts\Validation\Rule;
 use libphonenumber\NumberParseException;
 use libphonenumber\PhoneNumberUtil;
 
-class ValidPhoneNumber implements Rule
-{
+class ValidPhoneNumber implements Rule {
 
-    private $error;
-
-    /**
-     * Create a new rule instance.
-     *
-     * @return void
-     */
-    public function __construct()
-    {
-        //
-    }
+    public $error;
 
     /**
      * Determine if the validation rule passes.
@@ -28,17 +17,21 @@ class ValidPhoneNumber implements Rule
      * @param  mixed  $value
      * @return bool
      */
-    public function passes($attribute, $value)
-    {
+    public function passes($attribute, $value) {
+      return $this->validate($value);
+    }
+
+    public function validate($number) {
       // Define classes that we need to use.
       $phoneUtil = PhoneNumberUtil::getInstance();
 
       try {
         // Define PhoneNumber instance.
-        $phoneNumber = $phoneUtil->parse($value);
+        $phoneNumber = $phoneUtil->parse($number);
         // Check if phone number is valid.
         if (!$phoneUtil->isValidNumber($phoneNumber)) {
           $this->error = 'The phone number is not valid.';
+          return FALSE;
         }
         else {
           return TRUE;
@@ -46,6 +39,7 @@ class ValidPhoneNumber implements Rule
       }
       catch (NumberParseException $e) {
         $this->error = $e->getMessage();
+        return FALSE;
       }
     }
 

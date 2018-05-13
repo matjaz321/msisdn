@@ -16,3 +16,19 @@ use Illuminate\Http\Request;
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+// API for records
+Route::post('/number-validate', [
+  'as' => 'number.validate',
+  'uses' => 'APIController@validateNumber',
+]);
+
+Route::get('/record/{record}', [
+  'as' => 'record.item',
+  'uses' => 'APIController@show',
+]);
+
+Route::get('/records', [
+  'as' => 'records.list',
+  'uses' => 'APIController@index',
+]);

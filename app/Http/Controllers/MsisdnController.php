@@ -20,6 +20,14 @@ class MsisdnController extends Controller {
     // Retrieve the validated input data...
     $number = $request->number;
 
+    // Create new record.
+    $record = $this->createNewRecord($number);
+
+    // Redirect to our route.
+    return redirect(route('record.item', ['record' => $record->id]));
+  }
+
+  public function createNewRecord($number) {
     // Define classes that we need to use.
     $phoneUtil = PhoneNumberUtil::getInstance();
     $phoneNumberCarrier = PhoneNumberToCarrierMapper::getInstance();
@@ -49,8 +57,7 @@ class MsisdnController extends Controller {
           'data' => json_encode($data),
         ]);
 
-        // Redirect to our route.
-        return redirect(route('record.item', ['record' => $record->id]));
+        return $record;
       }
     } catch (NumberParseException $e) {
       throw new NumberParseException($e, $e->getMessage());
