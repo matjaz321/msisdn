@@ -42,13 +42,17 @@ class MsisdnController extends Controller {
           'country_code' => $countryCode,
         ];
 
-        Records::create([
+        // Save new record into database.
+        $record = Records::create([
           'phone_number' => $number,
           'data' => json_encode($data),
         ]);
+
+        // Redirect to our route.
+        return redirect(route('record.item', ['record' => $record->id]));
       }
     } catch (NumberParseException $e) {
-      // Define errors.
+      throw new NumberParseException($e, $e->getMessage());
     }
   }
 }

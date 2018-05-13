@@ -19,3 +19,8 @@ Route::post('/number-validate', [
   'as' => 'number.validate',
   'uses' => 'MsisdnController@validateNumber',
 ]);
+
+Route::get('/record/{record}', [
+  'as' => 'record.item',
+  'uses' => 'RecordsController@index',
+]);
