@@ -29,3 +29,5 @@ services:
       - MYSQL_DATABASE=dockerApp
     ports:
       - "33061:3306"
+    volumes:
+      - "./database.sql:/var/lib/mysql"
