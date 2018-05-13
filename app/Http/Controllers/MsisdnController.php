@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Records;
+use App\Rules\ValidPhoneNumber;
 use Illuminate\Http\Request;
 use libphonenumber\NumberParseException;
+use libphonenumber\PhoneNumberFormat;
 use libphonenumber\PhoneNumberToCarrierMapper;
 use libphonenumber\PhoneNumberUtil;
 
@@ -13,7 +15,7 @@ class MsisdnController extends Controller {
   public function validateNumber(Request $request) {
     // Number field is required and also validate E.164 format.
     $this->validate($request, [
-      'number' => 'required|regex:/^\+?\d{6,7}[2-9]\d{3}$/',
+      'number' => ['required', new ValidPhoneNumber()],
     ]);
 
     // Retrieve the validated input data...
