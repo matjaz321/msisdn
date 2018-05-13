@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 class MsisdnController extends Controller {
 
   public function validateNumber(Request $request) {
+    // Number field is required and also validate E.164 format.
     $this->validate($request, [
       'number' => 'required|regex:/^\+?\d{6,7}[2-9]\d{3}$/',
     ]);
