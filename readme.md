@@ -2,6 +2,7 @@ Insallation instructions:
 - composer install
 - docker-compose up -d
 - http://localhost:8080/
+- phpmyadmin: http://localhost:8000
 
 API Routes
 
