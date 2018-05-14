@@ -1,40 +1,36 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App;
 
-use App\Records;
-use App\Rules\ValidPhoneNumber;
-use Illuminate\Http\Request;
 use libphonenumber\NumberParseException;
 use libphonenumber\PhoneNumberToCarrierMapper;
 use libphonenumber\PhoneNumberUtil;
 
-class MsisdnController extends Controller {
+/**
+ * Class Msisdn
+ *
+ * @package \App
+ */
+class Msisdn {
 
-  public function validateNumber(Request $request) {
-    // Number field is required and also validate E.164 format.
-    $this->validate($request, [
-      'number' => ['required', new ValidPhoneNumber()],
-    ]);
+  protected $number;
 
-    // Retrieve the validated input data...
-    $number = $request->number;
-
-    // Create new record.
-    $record = $this->createNewRecord($number);
-
-    // Redirect to our route.
-    return redirect(route('record.item', ['record' => $record->id]));
+  function __construct($number) {
+    $this->number = $number;
   }
 
-  public function createNewRecord($number) {
-    // Define classes that we need to use.
-    $phoneUtil = PhoneNumberUtil::getInstance();
-    $phoneNumberCarrier = PhoneNumberToCarrierMapper::getInstance();
-
+  /**
+   * Function will create new record.
+   * @return \App\Records
+   * @throws \libphonenumber\NumberParseException
+   */
+  public function createNewRecord() {
     try {
+      // Define classes that we need to use.
+      $phoneUtil = PhoneNumberUtil::getInstance();
+      $phoneNumberCarrier = PhoneNumberToCarrierMapper::getInstance();
       // Define PhoneNumber instance.
-      $phoneNumber = $phoneUtil->parse($number);
+      $phoneNumber = $phoneUtil->parse($this->number);
       // Check if phone number is valid.
       if ($phoneUtil->isValidNumber($phoneNumber)) {
         // Get phone number parameters.
@@ -53,7 +49,7 @@ class MsisdnController extends Controller {
 
         // Save new record into database.
         $record = Records::create([
-          'phone_number' => $number,
+          'phone_number' => $this->number,
           'data' => json_encode($data),
         ]);
 

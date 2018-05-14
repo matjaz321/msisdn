@@ -15,17 +15,11 @@ Route::get('/', function () {
     return view('home');
 });
 
-Route::post('/number-validate', [
-  'as' => 'number.validate',
-  'uses' => 'MsisdnController@validateNumber',
-]);
+Route::post('/validate', 'RecordsController@validateNumber')->name('number.validate');
 
-Route::get('/record/{record}', [
-  'as' => 'record.item',
-  'uses' => 'RecordsController@show',
-]);
-
-Route::get('/records', [
-  'as' => 'records.list',
-  'uses' => 'RecordsController@index',
-]);
+Route::prefix('record')->group(function () {
+  // URL /record/details/id
+  Route::get('details/{record}', 'RecordsController@show')->name('record.item');
+  // URL /record/list
+  Route::get('list', 'RecordsController@index')->name('records.list');
+});

@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Msisdn;
 use App\Records;
+use App\Rules\ValidPhoneNumber;
 use Illuminate\Http\Request;
 
 class RecordsController extends Controller
@@ -85,5 +87,24 @@ class RecordsController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function validateNumber(Request $request) {
+      // Number field is required and also validate E.164 format.
+      $this->validate($request, [
+        'number' => ['required', new ValidPhoneNumber()],
+      ]);
+
+      // Retrieve the validated input data.
+      $number = $request->number;
+
+      // Define our class.
+      $msisdn = new Msisdn($number);
+
+      // Create new record.
+      $record = $msisdn->createNewRecord();
+
+      // Redirect to our route.
+      return redirect(route('record.item', ['record' => $record->id]));
     }
 }
