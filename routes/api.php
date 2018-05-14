@@ -18,17 +18,8 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 
 // API for records
-Route::post('/number-validate', [
-  'as' => 'number.validate',
-  'uses' => 'APIController@validateNumber',
-]);
-
-Route::get('/record/{record}', [
-  'as' => 'record.item',
-  'uses' => 'APIController@show',
-]);
-
-Route::get('/records', [
-  'as' => 'records.list',
-  'uses' => 'APIController@index',
-]);
+Route::prefix('/record')->group(function () {
+  Route::post('validate', 'APIController@validateNumber')->name('number.validate');
+  Route::get('details/{record}', 'APIController@show')->name('record.item');
+  Route::get('list', 'APIController@index')->name('records.list');
+});

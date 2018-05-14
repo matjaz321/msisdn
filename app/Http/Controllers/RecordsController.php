@@ -89,6 +89,13 @@ class RecordsController extends Controller
         //
     }
 
+  /**
+   * Validate the number on form submit.
+   *
+   * @param \Illuminate\Http\Request $request
+   *
+   * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+   */
     public function validateNumber(Request $request) {
       // Number field is required and also validate E.164 format.
       $this->validate($request, [

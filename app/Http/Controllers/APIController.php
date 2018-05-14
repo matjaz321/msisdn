@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Msisdn;
 use App\Records;
 use App\Rules\ValidPhoneNumber;
 use Illuminate\Http\Request;
@@ -95,8 +96,11 @@ class APIController extends Controller
       $validPhoneNumber = new ValidPhoneNumber();
       $isValid = $validPhoneNumber->validate($number);
       if ($isValid) {
-        $controller= new MsisdnController();
-        $record = $controller->createNewRecord($number);
+        // Define our class.
+        $msisdn = new Msisdn($number);
+
+        // Create new record.
+        $record = $msisdn->createNewRecord();
         return response()->json(['data' => $record], 200);
       }
       else {
